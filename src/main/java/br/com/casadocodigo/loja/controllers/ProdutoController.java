@@ -2,8 +2,14 @@ package br.com.casadocodigo.loja.controllers;
 
 import java.util.List;
 
+import javax.naming.Binding;
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -12,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import br.com.casadocodigo.loja.daos.ProdutoDao;
 import br.com.casadocodigo.loja.models.Produto;
 import br.com.casadocodigo.loja.models.TipoPreco;
+import br.com.casadocodigo.loja.validation.ProdutoValidation;
 
 @Controller
 @RequestMapping(value="/produtos")
@@ -19,6 +26,11 @@ public class ProdutoController {
 	
 	@Autowired
 	private ProdutoDao produtoDao;
+	
+	@InitBinder
+	public void InitBinder(WebDataBinder binder){
+		binder.addValidators(new ProdutoValidation());
+	}
 
 	@RequestMapping("form")
 	public ModelAndView form(){
@@ -28,9 +40,12 @@ public class ProdutoController {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
-	public ModelAndView gravar(Produto produto, RedirectAttributes redirectAttributes){
-		System.out.println(produto);
+	public ModelAndView gravar(@Valid Produto produto,BindingResult result, RedirectAttributes redirectAttributes){
+		if(result.hasErrors())
+			return form();
+		
 		produtoDao.gravar(produto);
+		
 		redirectAttributes.addFlashAttribute("sucesso","Produto cadastrado com sucesso");
 		return new ModelAndView("redirect:produtos");
 	}
