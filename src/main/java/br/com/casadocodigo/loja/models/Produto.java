@@ -12,25 +12,25 @@ import javax.persistence.NamedQuery;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-
-@NamedQuery(name="todosProdutos",query="select p from Produto p")
+@NamedQuery(name = "todosProdutos", query = "select p from Produto p")
 @Entity
 public class Produto {
-	
-	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
 	private String titulo;
 	private String descricao;
 	private int paginas;
-	
+	private String sumarioPath;
+
 	@DateTimeFormat
 	private Calendar dataLancamento;
-	
+
 	@ElementCollection
 	private List<Preco> precos;
 
-	
 	public List<Preco> getPrecos() {
 		return precos;
 	}
@@ -62,7 +62,7 @@ public class Produto {
 	public void setPaginas(int paginas) {
 		this.paginas = paginas;
 	}
-	
+
 	public int getId() {
 		return id;
 	}
@@ -79,11 +79,18 @@ public class Produto {
 		this.dataLancamento = dataLancamento;
 	}
 
+	public String getSumarioPath() {
+		return sumarioPath;
+	}
+
+	public void setSumarioPath(String sumarioPath) {
+		this.sumarioPath = sumarioPath;
+	}
+
 	@Override
 	public String toString() {
 		return "Produto [id=" + id + ", titulo=" + titulo + ", descricao=" + descricao + ", paginas=" + paginas
 				+ ", precos=" + precos + "]";
 	}
-
 
 }
