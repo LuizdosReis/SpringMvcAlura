@@ -26,4 +26,10 @@ public class ProdutoDao {
 		TypedQuery<Produto> query = manager.createNamedQuery("todosProdutos", Produto.class);
 		return query.getResultList();
 	}
+
+	public Produto find(Integer id) {
+		TypedQuery<Produto> query = manager.createNamedQuery("produto", Produto.class);
+		query.setParameter("id", id);
+		return query.getSingleResult();
+	}
 }

@@ -8,11 +8,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-@NamedQuery(name = "todosProdutos", query = "select p from Produto p")
+@NamedQueries({
+	@NamedQuery(name = "todosProdutos", query = "select p from Produto p"),
+	@NamedQuery(name = "produto", query = "select distinct(p) from Produto p join fetch p.precos precos where p.id = :id")
+})
 @Entity
 public class Produto {
 
