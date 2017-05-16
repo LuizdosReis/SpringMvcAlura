@@ -1,5 +1,7 @@
 package br.com.casadocodigo.loja.models;
 
+import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -17,7 +19,7 @@ public class CarrinhoCompras {
 		itens.put(item, getQuantidade(item) + 1);
 	}
 
-	private int getQuantidade(CarrinhoItem item) {
+	public int getQuantidade(CarrinhoItem item) {
 		if (!itens.containsKey(item)) {
 			return 0;
 		}
@@ -26,6 +28,21 @@ public class CarrinhoCompras {
 	
 	public int getQuantidade(){
 		return itens.values().stream().mapToInt(Integer:: intValue).sum();
+	}
+	
+	public BigDecimal getTotal(CarrinhoItem item){
+		return item.getTotal(getQuantidade(item));
+	}
+	
+	public BigDecimal getTotal(){
+		BigDecimal total = BigDecimal.ZERO;
+		for(CarrinhoItem item : itens.keySet())
+			total = total.add(getTotal(item));
+		return total;
+	}
+	
+	public Collection<CarrinhoItem> getItens(){
+		return itens.keySet();
 	}
 
 }
