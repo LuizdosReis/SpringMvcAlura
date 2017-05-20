@@ -110,14 +110,19 @@
 			          <td class="quantity-input-cell"><input type="number" min="0" readonly="readonly" id="quantidade" name="quantidade" value="${carrinhoCompras.getQuantidade(item)}"/></td>
 			          <td class="numeric-cell">${carrinhoCompras.getTotal(item)}</td>
 			          <td class="remove-item">
-			          	<form action="" method="post"><input type="image" src="/excluir.png" alt="excluir" title="excluir" /></form>
+			          	<form action="${s:mvcUrl('CCC#remover').arg(0,item.produto.id).arg(1,item.tipo).build()}" method="post">
+			          		<input type="image" src="/excluir.png" alt="excluir" title="excluir" />
+			          	</form>
 			          </td>
 			      </tr>
 		      	</c:forEach>
 		      </tbody>
 			      <tfoot>
 			        <tr>
-			          <td colspan="3"><input type="submit" class="checkout" name="checkout" value="Finalizar compra" /></td>
+			          <td colspan="3">
+			          	<form action="${s:mvcUrl('PC#finalizar').build()}" method="post">
+			          		<input type="submit" class="checkout" name="checkout" value="Finalizar compra" /></td>
+			          	</form>
 			          <td class="numeric-cell">${carrinhoCompras.total}</td><td></td>
 			        </tr>
 			      </tfoot>
